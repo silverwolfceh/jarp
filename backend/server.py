@@ -1,6 +1,9 @@
-import SocketServer
 import sys
 import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(dir_path + os.sep + 'module')
+
+import SocketServer
 import time
 from serverhandle import *
 
@@ -10,8 +13,6 @@ class RPI_TCPHandler(SocketServer.BaseRequestHandler):
 		self.socket.bind(self.server_address)
 
 	def setup(self):
-		dir_path = os.path.dirname(os.path.realpath(__file__))
-		sys.path.append(dir_path + os.sep + 'module')
 		self.datahandle = RPI_serverhandle()
 
 	def handle(self):
