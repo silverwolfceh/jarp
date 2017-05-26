@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script src="js/canvasjs.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+	<script type="text/javascript">
+	var dps = [{x: 0, y: 0}]
+	window.onload = function() {
+		var chart = new CanvasJS.Chart("chartContainer", {
+			title: {
+				text: "Memory Usage (%)"
+			},
+			axisX: {
+				interval: 10
+			},
+			data: [{
+				type: "line",
+				dataPoints: dps
+			}]
+		});
+		chart.render();
+		var xVal = dps.length + 1;
+		var yVal = 100;
+		var updateInterval = 1000;
+		var updateChart = function () {
+			$.post("http://localhost/maiopi/web/test/testsystem.php", function(data){
+				console.log(data)
+				var obj = JSON.parse(data)
+				yVal = (obj.rep.mem_used / obj.rep.mem_total) * 100;
+				dps.push({x: xVal,y: yVal,});
+				xVal = dps.length + 1;
+				chart.render();
+			});
+		};
+		setInterval(function(){updateChart()}, updateInterval);
+	};
+
+	</script>
+
+	<title>MEM USED LIVE CHART</title>
+</head>
+
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+
+</html>
