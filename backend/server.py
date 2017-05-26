@@ -1,5 +1,11 @@
 import sys
 import os
+import platform
+if platform.machine() == "armv7l":
+	import RPi.GPIO as GPIO
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setwarnings(False)
+	
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dir_path + os.sep + 'module')
 
@@ -24,10 +30,11 @@ if __name__ == "__main__":
 	server = ""
 	try:
 		server = SocketServer.TCPServer((HOST, PORT), RPI_TCPHandler)
+		print "Backend server is ready on %s:%d" % (HOST, PORT)
 		server.serve_forever()
 	except KeyboardInterrupt:
-		print "User aborted"
+		print "User aborted. Shutting down"
 		server.shutdown()
 		server.server_close()
-		time.sleep(1)
+		time.sleep(2)
 

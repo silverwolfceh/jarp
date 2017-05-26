@@ -1,6 +1,7 @@
 import json
 import subprocess
 import re
+import platform
 
 class sysinfo(object):
 	module = "sysinfo"
@@ -10,7 +11,7 @@ class sysinfo(object):
 		self.info['mem_free'] = "0"
 		self.info['mem_used'] = "0"
 		self.info['mem_total'] = "0"
-		self.info['temp'] = "41"
+		self.info['temp'] = "0"
 		self.res = ''
 		pass
 
@@ -35,7 +36,8 @@ class sysinfo(object):
 		cmd = 'top -bn1 | grep "Cpu(s)"'
 		output = self.execute(cmd)
 		m = re.search('([0-9\.]+) id', output)
-		self.info['cpu_used'] = 100 - float(m.group(1))
+		idle = float(m.group(1))
+		self.info['cpu_used'] = round(100 - float("{0:.2f}".format(idle)),2)
 		return output
 
 	#KiB Mem:   8072772 total,  7858148 used,   214624 free,   814672 buffers
@@ -50,7 +52,12 @@ class sysinfo(object):
 		self.info['mem_total'] = m.group(1)
 
 	def temp_info(self):
-		self.info['temp'] = 100
+		self.info['temp'] = 0
+		if platform.machine() == "armv7l":
+			output = self.execute("vcgencmd measure_temp")
+			m = re.search('([0-9\.]+)', output)
+			self.info['temp'] = float(m.group(1))
+		
 
 	def handle_data(self, data):
 		self.cpu_info()
