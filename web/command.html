@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"> 
+  <title>Voice Regconition Sample</title>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+    <script>
+      function control_light(x, state)
+      {
+        console.log("Đèn " + x + " " + state);
+        if(state == "bật")
+          state = 1;
+        else 
+          state = 0;
+        $.post("api.php", {"module": "gpio", "pin": x, "state" : state }, function(data) {
+          console.log(data)
+        });
+      }
+      if (annyang)
+      {
+        var commands = {
+          'đèn :x :state' : control_light
+        }
+        annyang.debug();
+        annyang.setLanguage('vi-VI');
+        annyang.addCommands(commands);
+        annyang.start();
+      }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+

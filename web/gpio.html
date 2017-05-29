@@ -1,0 +1,23 @@
+<html>
+<head>
+<title> Simple GPIO Button </title>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script>
+window.onload = function() {
+	var state = 0;
+	$('#controlbtn').on("click", function() {
+		state = state ? 0: 1;
+		btnval = state ? "Turn off" : "Turn on"
+		$.post("api.php", {"module": "gpio", "pin": 18, "state" : state }, function(data){
+			console.log(data)
+			document.getElementById("controlbtn").value = btnval;
+		});
+
+	});
+};
+</script>
+</head>
+<body>
+<input type='button' id='controlbtn' value='Turn on'></input>
+</body>
+</html>

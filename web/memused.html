@@ -23,7 +23,7 @@
 		var yVal = 100;
 		var updateInterval = 1000;
 		var updateChart = function () {
-			$.post("http://localhost/maiopi/web/test/testsystem.php", function(data){
+			$.post("http://10.20.18.79/test/testsystem.php", function(data){
 				console.log(data)
 				var obj = JSON.parse(data)
 				yVal = (obj.rep.mem_used / obj.rep.mem_total) * 100;
