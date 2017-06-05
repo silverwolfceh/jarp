@@ -3,6 +3,8 @@ import subprocess
 import re
 import platform
 import random
+from util import *
+
 
 class sysinfo(object):
 	module = "sysinfo"
@@ -62,7 +64,7 @@ class sysinfo(object):
 
 	def temp_info(self):
 		self.info['temp'] = random.randint(10,90)
-		if platform.machine() == "armv7l":
+		if is_rpi():
 			output = self.execute("vcgencmd measure_temp")
 			m = re.search('([0-9\.]+)', output)
 			self.info['temp'] = float(m.group(1))
