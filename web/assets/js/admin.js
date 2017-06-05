@@ -226,7 +226,94 @@ $(document).ready(function() {
 		ctx.fillText(text, W/2 - text_width/2, H/2 + 15);
 	}
 
-	function do_request()
+	var categories = []
+	var serie1 = []
+	var serie2 = []
+	for(i = 0; i < 30; i++)
+	{
+		categories.push("Time #" + i)
+		serie1.push(0)
+		serie2.push(0)
+	}
+
+	var network_chart = new Highcharts.Chart({
+		chart: {
+			renderTo: 'importantchart',
+			type: 'column',
+			backgroundColor: 'transparent',
+			height: 140,
+			marginLeft: 3,
+			marginRight: 3,
+			marginBottom: 0,
+			marginTop: 0
+		},
+		title: {
+			text: ''
+		},
+		xAxis: {
+			lineWidth: 0,
+			tickWidth: 0,
+			labels: {
+				enabled: false
+			},
+			categories: categories
+		},
+		yAxis: {
+			labels: {
+				enabled: true
+			},
+			gridLineWidth: 0,
+			title: {
+			  text: null,
+			},
+		},
+		series: [
+			{
+				name: 'IN',
+				color: 'rgb(178, 200, 49)',
+				type: 'line',
+				data: serie1
+			},
+			{
+				name: 'OUT',
+				color: '#3498DB',
+				type: 'line',
+				data: serie2
+			}
+		],
+		credits: {
+			enabled: false
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			column: {
+				borderWidth: 0,
+				color: '#b2c831',
+				shadow: false
+			},
+			line: {
+				marker: {
+					enabled: false
+				},
+				lineWidth: 3
+			}
+		},
+		tooltip: {
+			enabled: true
+		}
+	});
+	function update_network(tx, rx)
+	{
+		network_chart.series[0].addPoint(rx, true, true)
+		network_chart.series[1].addPoint(tx, true, true)
+		var realtime = "IN/OUT " + rx + " / " + tx
+		$("#currentnetwork").html(realtime)
+	}
+
+	var timer = ""
+	function update_dashboard()
 	{
 		$.post("api.php", {"module": "sysinfo"}, function(data){
 			if(data.indexOf("Failed to connect") == -1)
@@ -234,15 +321,18 @@ $(document).ready(function() {
 				var obj = JSON.parse(data)
 				if(obj)
 				{
-					//console.log(data)
-					cpu_temp_update(obj.data.network.rx)
+					if(timer)
+						clearInterval(timer)
+
+					cpu_temp_update(obj.data.temp)
 					update_cpu_load(obj.data.cpu_used)
 					update_memusage(obj.data.mem.mem_used, obj.data.mem.mem_free, obj.data.mem.mem_total)
+					update_network(obj.data.network.tx, obj.data.network.rx)
+					timer = setInterval(function(){update_dashboard()}, 1000);
 				}
 			}
 		});
 	}
-	do_request()
-	setInterval(function(){do_request()}, 1000);
+	update_dashboard()
 
 });

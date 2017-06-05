@@ -2,6 +2,7 @@ import json
 import subprocess
 import re
 import platform
+import random
 
 class sysinfo(object):
 	module = "sysinfo"
@@ -29,12 +30,15 @@ class sysinfo(object):
 		return res
 
 	def execute(self, cmd, is_print = 0):
-		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-		output = ''
-		for line in iter(proc.stdout.readline,''):
-			output += line.rstrip() + "\n"
-		proc.communicate()[0]
-		proc.wait()
+		try:
+			proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+			output = ''
+			for line in iter(proc.stdout.readline,''):
+				output += line.rstrip() + "\n"
+			proc.communicate()[0]
+			proc.wait()
+		except KeyboardInterrupt:
+			pass
 		return output
 
 	def cpu_info(self):
@@ -57,7 +61,7 @@ class sysinfo(object):
 		self.info['mem']['mem_total'] = m.group(1)
 
 	def temp_info(self):
-		self.info['temp'] = 0
+		self.info['temp'] = random.randint(10,90)
 		if platform.machine() == "armv7l":
 			output = self.execute("vcgencmd measure_temp")
 			m = re.search('([0-9\.]+)', output)

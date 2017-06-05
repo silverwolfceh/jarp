@@ -538,7 +538,6 @@ digiclock {
   font-weight: bold;
   margin-top: 12px;
   margin-left: 21px;
-  width: 100px;
 }
 .section-graph .graph-info .graph-arrow {
   width: 0;

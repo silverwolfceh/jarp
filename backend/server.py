@@ -26,7 +26,8 @@ class RPI_TCPHandler(SocketServer.BaseRequestHandler):
 		self.request.sendall(self.datahandle.handle_data(self.data))
 
 if __name__ == "__main__":
-	HOST, PORT = "127.0.0.1", 8888
+	HOST = "127.0.0.1"
+	PORT = int(os.getenv('SRVPORT', 9999))
 	server = ""
 	try:
 		server = SocketServer.TCPServer((HOST, PORT), RPI_TCPHandler)
