@@ -186,50 +186,49 @@ $(document).ready(function() {
 		memusage_chart.series[0].setData(newdata)
 		$("#memlbl").html(used + "%")
 	}
+	cputemp_chart = new Highcharts.Chart({
+		chart: {
+			renderTo: 'temp',
+			margin: [0, 0, 0, 0],
+			backgroundColor: null,
+			plotBackgroundColor: 'none',
 
-	function cpu_temp_update(temp)
+		},
+
+		title: {
+			text: null
+		},
+
+		tooltip: {
+			formatter: function() {
+				return this.point.name +': '+ this.y +' %';
+
+			}
+		},
+		series: [
+			{
+			borderWidth: 2,
+			borderColor: '#F1F3EB',
+			shadow: false,
+			type: 'pie',
+			name: 'temp',
+			innerSize: '50%',
+			data: [
+				{ name: 'Temp', y: 15.0, color: '#fa1d2d' },
+				{ name: 'Rest', y: 95.0, color: '#3d3d3d' }
+			],
+			dataLabels: {
+				enabled: false,
+				color: '#000000',
+				connectorColor: '#000000'
+			}
+		}]
+	});
+	function update_cputemp(temp)
 	{
-		var degrees = temp * 360 / 100
-		var canvas = document.getElementById("cputemp");
-		var ctx = canvas.getContext("2d");
-		var W = canvas.width;
-		var H = canvas.height;
-		var color = "#b2c831"; //green looks better to me
-		var bgcolor = "#222";
-		var text;
-		//Clear the canvas everytime a chart is drawn
-		ctx.clearRect(0, 0, W, H);
-
-		//Background 360 degree arc
-		ctx.beginPath();
-		ctx.strokeStyle = bgcolor;
-		ctx.lineWidth = 30;
-		ctx.arc(W/2, H/2, 100, 0, Math.PI*2, false); //you can see the arc now
-		ctx.stroke();
-
-		//gauge will be a simple arc
-		//Angle in radians = angle in degrees * PI / 180
-		var radians = degrees * Math.PI / 180;
-		ctx.beginPath();
-		ctx.strokeStyle = color;
-		ctx.lineWidth = 30;
-		//The arc starts from the rightmost end. If we deduct 90 degrees from the angles
-		//the arc will start from the topmost end
-		ctx.arc(W/2, H/2, 100, 0 - 90*Math.PI/180, radians - 90*Math.PI/180, false);
-		//you can see the arc now
-		ctx.stroke();
-
-		//Lets add the text
-		ctx.fillStyle = color;
-		ctx.font = "50px open sans";
-		//text = Math.floor(temp/360*100) + "%";
-		text = temp + "℃"
-		//Lets center the text
-		//deducting half of text width from position x
-		text_width = ctx.measureText(text).width;
-		//adding manual value to position y since the height of the text cannot
-		//be measured easily. There are hacks but we will keep it manual for now.
-		ctx.fillText(text, W/2 - text_width/2, H/2 + 15);
+		newdata = [{ name: 'Temp', y: temp, color: '#b2c831' }, { name: 'Rest', y: 100 - temp, color: '#3d3d3d' }]
+		cputemp_chart.series[0].setData(newdata)
+		$("#templbl").html(temp + "<sup>o</sup>C")
 	}
 
 	var categories = []
@@ -329,8 +328,7 @@ $(document).ready(function() {
 				{
 					if(timer)
 						clearInterval(timer)
-
-					cpu_temp_update(obj.data.temp)
+					update_cputemp(obj.data.temp)
 					update_cpu_load(obj.data.cpu_used)
 					update_memusage(obj.data.mem.mem_used, obj.data.mem.mem_free, obj.data.mem.mem_total)
 					update_network(obj.data.network.tx, obj.data.network.rx)

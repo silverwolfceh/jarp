@@ -516,7 +516,7 @@ digiclock {
 	background-position: center center;
 	margin:auto;
 }
-#cputemp {
+#temp {
 	width: 11.313em;
 	height: 11.313em;
 	-moz-border-radius: 5px;
@@ -748,10 +748,9 @@ ul#jstwitter li a{
 
 
 /**********Gauge Chart**********/
-#canvas {
+#cputemp {
 	display: block;
-	width: 150px;
-	margin: 30px auto;
+	margin: auto;
 }
 
 /**********Accordion Styling**********/
@@ -870,6 +869,11 @@ a:hover {
 }
 
 #space {
+	margin-left:5px;
+	margin-right:10px;
+}
+
+#temp {
 	margin-left:5px;
 	margin-right:10px;
 }
