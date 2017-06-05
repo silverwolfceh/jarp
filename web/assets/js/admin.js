@@ -39,15 +39,23 @@
 		noty(options);
 	});
 
-
+function isJson(str) {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
+}
 
 
 
 /*** Updater ***/
 $(document).ready(function() {
-	function notify_message(mesg)
+	function notify_message(mesg, typex)
 	{
-		var options = '{"text": "' + mesg + '", "layout": "topRight", "type": "success", "timeout": 3000}'
+		if (typeof(typex)==='undefined') typex = "success";
+		var options = '{"text": "' + mesg + '", "layout": "topRight", "type": "' + typex + '", "timeout": 1000}'
 		options = $.parseJSON(options);
 		noty(options)
 	}
@@ -354,26 +362,46 @@ $(document).ready(function() {
 	})
 
 	$("#restartbtn").click(function(){
+		var key = prompt("What is your auth. key?")
 		var cnf = confirm("Are you sure to restart server? ")
 		if(cnf)
 		{
-			$.post("api.php", {"module": "linux", "cmd": "sudo reboot" }, function(data){
+			$.post("api.php", {"module": "linux", "cmd": "sudo reboot", "key" : key }, function(data){
 				if(data.indexOf("Failed to connect") == -1)
 				{
-					console.log(data)
+					if(isJson(data))
+					{
+						var obj = JSON.parse(data)
+						if(obj)
+							notify_message(obj.data)
+					}
+					else
+					{
+						notify_message(data, "alert")
+					}
 				}
 			});
 		}
 	})
 
 	$("#shutdownbtn").click(function(){
+		var key = prompt("What is your auth. key?")
 		var cnf = confirm("Are you sure to shutdown server? ")
 		if(cnf)
 		{
-			$.post("api.php", {"module": "linux", "cmd": "sudo shutdown -h now" }, function(data){
+			$.post("api.php", {"module": "linux", "cmd": "sudo shutdown -h now", "key" : key }, function(data){
 				if(data.indexOf("Failed to connect") == -1)
 				{
-					console.log(data)
+					if(isJson(data))
+					{
+						var obj = JSON.parse(data)
+						if(obj)
+							notify_message(obj.data)
+					}
+					else
+					{
+						notify_message(data, "alert")
+					}
 				}
 			});
 		}

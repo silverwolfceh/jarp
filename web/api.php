@@ -39,17 +39,25 @@ if(isset($_REQUEST['module']))
 		}
 		case "linux":
 		{
-			$dt_linux = json_encode(array("module" => "linux", "data" => array("cmd" => $_REQUEST['cmd'])));
-			$out = transceiver_data($dt_linux, $err);
-			if($err['code'] == 0)
+			if(isset($_REQUEST['key']) && $_REQUEST['key'] == "j1r0")
 			{
-				echo $out; die();
+				$dt_linux = json_encode(array("module" => "linux", "data" => array("cmd" => $_REQUEST['cmd'])));
+				$out = transceiver_data($dt_linux, $err);
+				if($err['code'] == 0)
+				{
+					echo $out; die();
+				}
+				else
+				{
+					echo $err['msg']; die();
+				}
 			}
 			else
 			{
-				echo $err['msg']; die();
+				echo "AUTHORIZATION FAILED"; die();
 			}
 			break;
+			
 		}
 		default:
 		{
