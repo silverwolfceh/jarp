@@ -1,37 +1,67 @@
+
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8"> 
-  <title>Voice Regconition Sample</title>
-    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-    <script>
-      function control_light(x, state)
-      {
-        console.log("Đèn " + x + " " + state);
-        if(state == "bật")
-          state = 1;
-        else 
-          state = 0;
-        $.post("api.php", {"module": "gpio", "pin": x, "state" : state }, function(data) {
-          console.log(data)
-        });
-      }
-      if (annyang)
-      {
-        var commands = {
-          'đèn :x :state' : control_light
-        }
-        annyang.debug();
-        annyang.setLanguage('vi-VI');
-        annyang.addCommands(commands);
-        annyang.start();
-      }
-    </script>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Voice Regconition Sample</title>
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+		<script>
+			var name = ""
+			var bcommands = {
+				'chào em' : hello,
+				'Tên (tôi) là :name': user_name
+			}
+			var ccommands = {
+				'đèn :x :state' : control_light,
+				'tạm biệt' : good_bye
+			}
+			function pi_speech(speech)
+			{
+				document.getElementById('pispeech').innerHTML = speech
+			}
+			function control_light(x, state)
+			{
+				console.log("Đèn " + x + " " + state);
+				if(state == "bật")
+					state = 1;
+				else
+					state = 0;
+				$.post("api.php", {"module": "gpio", "pin": x, "state" : state }, function(data) {
+					console.log(data)
+				});
+			}
+			function hello()
+			{
+				pi_speech("Hello, who are you?")
+			}
+			function good_bye()
+			{
+				pi_speech("Goodbye "+ name + ". Have a nice day")
+				annyang.addCommands(bcommands, true)
+			}
+			function user_name(name)
+			{
+				name = name
+				pi_speech("Xin chào " + name + ", tôi có thể giúp gì cho bạn?")
+				annyang.addCommands(ccommands, true)
+			}
+			if (annyang)
+			{
+				annyang.debug();
+				annyang.setLanguage('vi-VI');
 
-</body>
+				annyang.addCommands(bcommands);
+				annyang.start({ autoRestart: true });
+			}
+		</script>
+	</head>
+	<body>
+		<div id="pispeech" style="color:blue; font-weight:strong">Xin chào, tôi là Pi</div>
+		<h3> Support commands </h3>
+		<div id="commands"></div>
+	</body>
 </html>
+
 
 

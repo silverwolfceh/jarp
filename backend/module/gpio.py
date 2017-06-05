@@ -40,8 +40,17 @@ class gpio(object):
 
 	def handle_data(self, data):
 		self.pin = int(data['pin'])
-		GPIO.setup(self.pin, GPIO.OUT)
-		self.set_state(int(data['state']))
-		response = "Pin : %s, State: %s" % (self.pin, self.state)
-		self.res = self.generate_default_response('success', '', response)
-		return json.dumps(self.res)
+		temp = {}
+		temp['pin'] = self.pin
+		if data['state'] != "1" and data['state'] != "0":
+			GPIO.setup(self.pin, GPIO.OUT)
+			
+			temp['state'] = GPIO.input(self.pin)
+			self.res = self.generate_default_response('success', '', temp)
+			return json.dumps(self.res)
+		else:
+			GPIO.setup(self.pin, GPIO.OUT)
+			self.set_state(int(data['state']))
+			temp['state'] = self.get_state()
+			self.res = self.generate_default_response('success', '', temp)
+			return json.dumps(self.res)
