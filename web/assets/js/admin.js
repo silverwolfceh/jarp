@@ -45,6 +45,12 @@
 
 /*** Updater ***/
 $(document).ready(function() {
+	function notify_message(mesg)
+	{
+		var options = '{"text": "' + mesg + '", "layout": "topRight", "type": "success", "timeout": 3000}'
+		options = $.parseJSON(options);
+		noty(options)
+	}
 	cpuload_chart = new Highcharts.Chart({
 		chart: {
 			renderTo: 'load',
@@ -344,10 +350,9 @@ $(document).ready(function() {
 		$.post("api.php", {"module": "gpio", "pin": info[0].replace("light",""), "state": state }, function(data){
 				if(data.indexOf("Failed to connect") == -1)
 				{
-					console.log(data)
+					notify_message("Light #" + info[0].replace("light","") + " is turned " + info[1])
 				}
 			});
-		console.log("State: " + $(this).attr('id'))
 	})
 
 	$("#restartbtn").click(function(){

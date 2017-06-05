@@ -1,12 +1,14 @@
 import sys
 import os
-import platform
-if platform.machine() == "armv7l":
+from util import is_rpi
+
+if is_rpi():
 	import RPi.GPIO as GPIO
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(dir_path)
 sys.path.append(dir_path + os.sep + 'module')
 
 import SocketServer

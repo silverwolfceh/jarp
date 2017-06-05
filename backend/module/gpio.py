@@ -1,6 +1,6 @@
 import json
-import platform
-if platform.machine() == "armv7l":
+from util import *
+if is_rpi():
 	import RPi.GPIO as GPIO
 
 class gpio(object):
@@ -23,12 +23,12 @@ class gpio(object):
 
 	def set_high(self):
 		self.state = 1
-		if platform.machine() == "armv7l":
+		if is_rpi():
 			GPIO.output(self.pin,self.state)
 
 	def set_low(self):
 		self.state = 0
-		if platform.machine() == "armv7l":
+		if is_rpi():
 			GPIO.output(self.pin,self.state)
 
 	def set_state(self, state):
@@ -42,7 +42,7 @@ class gpio(object):
 
 	def handle_data(self, data):
 		self.pin = int(data['pin'])
-		if platform.machine() == "armv7l":
+		if is_rpi():
 			GPIO.setup(self.pin, GPIO.OUT)
 		temp = {}
 		temp['pin'] = self.pin
