@@ -1,5 +1,5 @@
 <?php
-define("SRVPORT", 9999);
+define("SRVPORT", 8888);
 define("SRVADD", "127.0.0.1");
 
 

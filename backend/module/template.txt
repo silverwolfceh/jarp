@@ -9,7 +9,7 @@ class classname(object):
 		res = {}
 		res['status'] = status
 		res['reason'] = reason
-		res['rep'] = rep
+		res['data'] = rep
 		res['module'] = self.module
 		return res
 

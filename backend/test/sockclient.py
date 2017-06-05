@@ -14,7 +14,7 @@ if __name__ == "__main__":
                 else:
                         print "I don't know what you want"
                         exit(1)
-	HOST, PORT = "localhost", 9999
+	HOST, PORT = "127.0.0.1", 8888
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
 		# Connect to server and send data

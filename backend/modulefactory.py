@@ -2,18 +2,15 @@ from __future__ import generators
 import random
 import os
 import json
-import platform
 
-if platform.machine() == "armv7l":
-	from module.gpio import gpio
-
+from module.gpio import gpio
 from module.linux import linux
 from module.sysinfo import sysinfo
 
 class modulefactory(object):
 	@staticmethod
 	def factory(type):
-		if type == "gpio" and platform.machine() == "armv7l":
+		if type == "gpio":
 			return gpio()
 		elif type == "linux":
 			return linux()

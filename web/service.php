@@ -15,7 +15,7 @@ function transceiver_data($data, &$err)
 	if ($conn === false)
 	{
 		$err['code'] = -2;
-                $err['msg'] =  "Failed to connect";
+		$err['msg'] =  "Failed to connect";
 		return false;
 	}
 	socket_write($socket, $data, strlen($data));

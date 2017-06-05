@@ -13,7 +13,7 @@ class linux(object):
 		res['module'] = self.module
 		res['status'] = status
 		res['reason'] = reason
-		res['rep'] = rep
+		res['data'] = rep
 		return res
 
 	def execute(self, cmd, is_print = 0):

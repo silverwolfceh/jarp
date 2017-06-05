@@ -5,7 +5,7 @@ if platform.machine() == "armv7l":
 	import RPi.GPIO as GPIO
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
-	
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dir_path + os.sep + 'module')
 
@@ -26,7 +26,7 @@ class RPI_TCPHandler(SocketServer.BaseRequestHandler):
 		self.request.sendall(self.datahandle.handle_data(self.data))
 
 if __name__ == "__main__":
-	HOST, PORT = "0.0.0.0", 9999
+	HOST, PORT = "127.0.0.1", 8888
 	server = ""
 	try:
 		server = SocketServer.TCPServer((HOST, PORT), RPI_TCPHandler)
