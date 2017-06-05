@@ -30,7 +30,7 @@ if __name__ == "__main__":
 	PORT = int(os.getenv('SRVPORT', 9999))
 	server = ""
 	try:
-		server = SocketServer.TCPServer((HOST, PORT), RPI_TCPHandler)
+		server = SocketServer.ThreadingTCPServer((HOST, PORT), RPI_TCPHandler)
 		print "Backend server is ready on %s:%d" % (HOST, PORT)
 		server.serve_forever()
 	except KeyboardInterrupt:

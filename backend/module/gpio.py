@@ -41,9 +41,9 @@ class gpio(object):
 		return self.state
 
 	def handle_data(self, data):
+		self.pin = int(data['pin'])
 		if platform.machine() == "armv7l":
 			GPIO.setup(self.pin, GPIO.OUT)
-		self.pin = int(data['pin'])
 		temp = {}
 		temp['pin'] = self.pin
 		if int(data['state']) != 1 and int(data['state']) != 0:

@@ -17,7 +17,7 @@ class sysinfo(object):
 		self.info['network'] = {}
 		self.info['network']['tx'] = 0
 		self.info['network']['rx'] = 0
-		self.info['network']['if'] = "eth2"
+		self.info['network']['if'] = "wlan0"
 		self.res = ""
 		pass
 

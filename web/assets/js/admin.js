@@ -333,6 +333,47 @@ $(document).ready(function() {
 			}
 		});
 	}
-	update_dashboard()
+	update_dashboard();
+	$('[data-toggle="tooltip"]').tooltip()
+	$(".switch-input").click(function (){
+		var id = $(this).attr("id")
+		var info = id.split("_")
+		var state = 1
+		if(info[1] == "off")
+			state = 0;
+		$.post("api.php", {"module": "gpio", "pin": info[0].replace("light",""), "state": state }, function(data){
+				if(data.indexOf("Failed to connect") == -1)
+				{
+					console.log(data)
+				}
+			});
+		console.log("State: " + $(this).attr('id'))
+	})
+
+	$("#restartbtn").click(function(){
+		var cnf = confirm("Are you sure to restart server? ")
+		if(cnf)
+		{
+			$.post("api.php", {"module": "linux", "cmd": "sudo reboot" }, function(data){
+				if(data.indexOf("Failed to connect") == -1)
+				{
+					console.log(data)
+				}
+			});
+		}
+	})
+
+	$("#shutdownbtn").click(function(){
+		var cnf = confirm("Are you sure to shutdown server? ")
+		if(cnf)
+		{
+			$.post("api.php", {"module": "linux", "cmd": "sudo shutdown -h now" }, function(data){
+				if(data.indexOf("Failed to connect") == -1)
+				{
+					console.log(data)
+				}
+			});
+		}
+	})
 
 });

@@ -176,32 +176,9 @@
 				<div class="dash-unit">
 					<dtitle>Server Control</dtitle>
 					<hr>
-					<div class="info-user">
-						<span aria-hidden="true" class="li_params fs2"></span>
-					</div>
-					<br>
-					<div class="switch">
-
-						<input type="radio" class="switch-input" name="view" value="on" id="on" checked="">
-						<label for="on" class="switch-label switch-label-off">On</label>
-						<input type="radio" class="switch-input" name="view" value="off" id="off">
-						<label for="off" class="switch-label switch-label-on">Off</label>
-						<span class="switch-selection"></span>
-					</div>
-					<div class="switch switch-blue">
-						<input type="radio" class="switch-input" name="view2" value="week2" id="week2" checked="">
-						<label for="week2" class="switch-label switch-label-off">Week</label>
-						<input type="radio" class="switch-input" name="view2" value="month2" id="month2">
-						<label for="month2" class="switch-label switch-label-on">Month</label>
-						<span class="switch-selection"></span>
-					</div>
-
-					<div class="switch switch-yellow">
-						<input type="radio" class="switch-input" name="view3" value="yes" id="yes" checked="">
-						<label for="yes" class="switch-label switch-label-off">Yes</label>
-						<input type="radio" class="switch-input" name="view3" value="no" id="no">
-						<label for="no" class="switch-label switch-label-on">No</label>
-						<span class="switch-selection"></span>
+					<div class="x">
+						<h2><button type="button" id="shutdownbtn" class="btn btn-default btn-danger">SHUTDOWN SERVER</button></h2>
+						<h2><button type="button" id="restartbtn" class="btn btn-default btn-danger">RESTART SERVER</button></h2>
 					</div>
 				</div>
 			</div>
@@ -292,25 +269,26 @@
 					</div>
 					<br>
 					<div class="switch">
-						<input type="radio" class="switch-input" name="light1" value="on" id="on" checked="">
-						<label for="on" class="switch-label switch-label-off">On</label>
-						<input type="radio" class="switch-input" name="light1" value="off" id="off">
-						<label for="off" class="switch-label switch-label-on">Off</label>
+						
+						<input type="radio" class="switch-input" name="light1" value="on" id="light18_on" >
+						<label for="light18_on" class="switch-label switch-label-off" data-toggle="tooltip" data-placement="top" title="Light #18 ON">On</label>
+						<input type="radio" class="switch-input" name="light1" value="off" id="light18_off" checked="" >
+						<label for="light18_off" class="switch-label switch-label-on" data-toggle="tooltip" data-placement="top" title="Light #18 OFF">Off</label>
 						<span class="switch-selection"></span>
 					</div>
 					<div class="switch">
-						<input type="radio" class="switch-input" name="light2" value="on" id="on" checked="">
-						<label for="on" class="switch-label switch-label-off">On</label>
-						<input type="radio" class="switch-input" name="light2" value="off" id="off">
-						<label for="off" class="switch-label switch-label-on">Off</label>
+						<input type="radio" class="switch-input" name="light2" value="on" id="light23_on" >
+						<label for="light23_on" class="switch-label switch-label-off">On</label>
+						<input type="radio" class="switch-input" name="light2" value="off" id="light23_off" checked="">
+						<label for="light23_off" class="switch-label switch-label-on">Off</label>
 						<span class="switch-selection"></span>
 					</div>
 
 					<div class="switch">
-						<input type="radio" class="switch-input" name="light3" value="on" id="on" checked="">
-						<label for="on" class="switch-label switch-label-off">On</label>
-						<input type="radio" class="switch-input" name="light3" value="off" id="off">
-						<label for="off" class="switch-label switch-label-on">Off</label>
+						<input type="radio" class="switch-input" name="light3" value="on" id="light24_on">
+						<label for="light24_on" class="switch-label switch-label-off">On</label>
+						<input type="radio" class="switch-input" name="light3" value="off" id="light24_off" checked="">
+						<label for="light24_off" class="switch-label switch-label-on">Off</label>
 						<span class="switch-selection"></span>
 					</div>
 				</div>
@@ -338,7 +316,6 @@
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-	<script type="text/javascript" src="assets/js/lineandbars.js"></script>
 
 	<!-- NOTY JAVASCRIPT -->
 	<script type="text/javascript" src="assets/js/noty/jquery.noty.js"></script>

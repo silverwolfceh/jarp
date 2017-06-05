@@ -20,7 +20,7 @@ class linux(object):
 		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 		output = ''
 		for line in iter(proc.stdout.readline,''):
-			output += line.rstrip() + "\n"
+			output += line.rstrip() + "<br />"
 		proc.communicate()[0]
 		proc.wait()
 		return output

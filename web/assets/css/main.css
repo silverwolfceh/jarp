@@ -505,6 +505,8 @@ digiclock {
 	margin:auto;
 }
 
+
+
 #mem {
 	width: 11.313em;
 	height: 11.313em;
@@ -659,6 +661,7 @@ ul#jstwitter li a{
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
 }
+
 
 .switch-label {
   position: relative;
