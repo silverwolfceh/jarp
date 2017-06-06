@@ -1,8 +1,10 @@
-# maiopi - Just another raspberry project
+# MPI - Just another raspberry project
+
 
 ## Description
 This is a raspberry project which run mainly on raspberry pi board.
 It can monitor the system status, control your light and camera
+
 
 ## How to
 1. Checkout this project
@@ -25,3 +27,13 @@ sudo apt-get install ifstat
 
 ## Options:
 You can modify the backend.service file with the source path to enable server starting on boot
+
+
+## Credits:
+tongvuu@gmail.com
+BLOCKS DASHBOARD template
+HighCharts
+
+
+## Screenshot
+![Alt text](/web/screenshot.jpg?raw=true "Raspberry Pi Dashboard")
