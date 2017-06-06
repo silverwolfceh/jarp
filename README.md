@@ -1,11 +1,27 @@
-# maiopi - My Artifical Intelligent On my raspberry PI
+# maiopi - Just another raspberry project
 
 ## Description
-This is the side-project for IOT service running on PI.
+This is a raspberry project which run mainly on raspberry pi board.
+It can monitor the system status, control your light and camera
 
 ## How to
-1. Install webserver support php on your PI
-2. Install python from version 2.7.6 to your PI
-3. Run server.py first (python server.py)
-4. Run http://myserver/index.php
+1. Checkout this project
 
+2. Install webserver support php on your PI
+Guide here: https://www.stewright.me/2015/08/tutorial-install-apache-php-and-mysql-on-a-raspberry-pi-2/
+
+3. Update webserver directory part and site-enabled/default.conf to point to the web directory in source
+
+4. Install python from version 2.7.6 to your PI (this maynot need)
+
+5. Install neccessary packages:
+sudo pip install RPi.GPIO
+sudo apt-get install ifstat
+
+6. Run server.py (python server.py)
+
+7. Open web browser with address: http://your_raspberry_ip/
+
+
+## Options:
+You can modify the backend.service file with the source path to enable server starting on boot
