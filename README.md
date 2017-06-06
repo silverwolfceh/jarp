@@ -36,4 +36,4 @@ HighCharts
 
 
 ## Screenshot
-![Alt text](/web/screenshot.jpg?raw=true "Raspberry Pi Dashboard")
+![Alt text](/web/screenshot.png?raw=true "Raspberry Pi Dashboard")
