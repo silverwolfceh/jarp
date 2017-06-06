@@ -1,4 +1,4 @@
-# MPI - Just another raspberry project
+# JARP - Just another raspberry project
 
 
 ## Description
