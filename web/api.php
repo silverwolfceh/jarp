@@ -57,7 +57,20 @@ if(isset($_REQUEST['module']))
 				echo "AUTHORIZATION FAILED"; die();
 			}
 			break;
-			
+
+		}
+		case "checkstate":
+		{
+			$dt_linux = json_encode(array("module" => "linux", "data" => array("cmd" => "whoami")));
+			$out = transceiver_data($dt_linux, $err);
+			if($err['code'] == 0)
+			{
+				echo $out; die();
+			}
+			else
+			{
+				echo $err['msg']; die();
+			}
 		}
 		default:
 		{

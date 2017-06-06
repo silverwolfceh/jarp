@@ -16,6 +16,7 @@ class sysinfo(object):
 		self.info['mem']['mem_used'] = "0"
 		self.info['mem']['mem_total'] = "0"
 		self.info['temp'] = "0"
+		self.info['uptime'] = "0"
 		self.info['network'] = {}
 		self.info['network']['tx'] = 0
 		self.info['network']['rx'] = 0
@@ -78,11 +79,17 @@ class sysinfo(object):
 		self.info['network']['rx'] = float(m.group(1))
 		self.info['network']['tx'] = float(m.group(2))
 
+	def uptime_info(self):
+		self.info['uptime'] = "0"
+		output = self.execute("uptime | awk '{print $3}'")
+		m = re.search('([0-9\:]+)', output)
+		self.info['uptime'] = m.group(1)
 
 	def handle_data(self, data):
 		self.cpu_info()
 		self.mem_info()
 		self.temp_info()
+		self.uptime_info()
 		self.network_info()
 		self.res = self.generate_default_response('success', '')
 		return json.dumps(self.res)

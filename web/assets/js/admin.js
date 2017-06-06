@@ -32,12 +32,7 @@
 
 }());
 
-/* ---------- Notifications ---------- */
-	$('.noty').click(function(e){
-		e.preventDefault();
-		var options = $.parseJSON($(this).attr('data-noty-options'));
-		noty(options);
-	});
+var cpuload_chart, diskspace_chart, memusage_chart, cputemp_chart;
 
 function isJson(str) {
 	try {
@@ -48,196 +43,104 @@ function isJson(str) {
 	return true;
 }
 
+function create_pie_chart(render_element, series_data)
+{
+	var chart = new Highcharts.Chart({
+		chart: {
+			renderTo: render_element,
+			margin: [0, 0, 0, 0],
+			backgroundColor: null,
+			plotBackgroundColor: 'none',
+		},
+
+		title: {
+			text: null
+		},
+
+		tooltip: {
+			formatter: function() {
+				return this.point.name +': '+ this.y +' %';
+
+			}
+		},
+		series: [
+			{
+			borderWidth: 2,
+			borderColor: '#F1F3EB',
+			shadow: true,
+			type: 'pie',
+			name: render_element,
+			innerSize: '50%',
+			data: series_data,
+			dataLabels: {
+				enabled: false,
+				color: '#000000',
+				connectorColor: '#000000'
+			}
+		}]
+	});
+	return chart;
+}
+
+
+function update_cpu_load(newval)
+{
+	newdata = [{ name: 'load percentage', y: newval, color: '#b2c831' }, { name: 'rest', y: (100-newval), color: '#3d3d3d' }]
+	cpuload_chart.series[0].setData(newdata)
+	$("#loadlbl").html(newval + "%")
+}
+function update_diskspace(newval)
+{
+
+}
+function update_memusage(used, free, total)
+{
+	used = Math.floor((used / total) * 100)
+	free = 100 - used;
+	newdata = [{ name: 'Used', y: used, color: '#b2c831' }, { name: 'Rest', y: free, color: '#3d3d3d' }]
+	memusage_chart.series[0].setData(newdata)
+	$("#memlbl").html(used + "%")
+}
+function update_cputemp(temp)
+{
+	newdata = [{ name: 'Temp', y: temp, color: '#b2c831' }, { name: 'Rest', y: 100 - temp, color: '#3d3d3d' }]
+	cputemp_chart.series[0].setData(newdata)
+	$("#templbl").html(temp + "<sup>o</sup>C")
+}
+function update_uptime(newtime)
+{
+	$("#uptime").html(newtime)
+}
+function notify_message(mesg, typex)
+{
+	if (typeof(typex)==='undefined') typex = "success";
+	var options = '{"text": "' + mesg + '", "layout": "topRight", "type": "' + typex + '", "timeout": 500}'
+	options = $.parseJSON(options);
+	noty(options)
+}
+
 
 
 /*** Updater ***/
 $(document).ready(function() {
-	function notify_message(mesg, typex)
-	{
-		if (typeof(typex)==='undefined') typex = "success";
-		var options = '{"text": "' + mesg + '", "layout": "topRight", "type": "' + typex + '", "timeout": 1000}'
-		options = $.parseJSON(options);
-		noty(options)
-	}
-	cpuload_chart = new Highcharts.Chart({
-		chart: {
-			renderTo: 'load',
-			margin: [0, 0, 0, 0],
-			backgroundColor: null,
-			plotBackgroundColor: 'none',
-		},
 
-		title: {
-			text: null
-		},
-
-		tooltip: {
-			formatter: function() {
-				return this.point.name +': '+ this.y +' %';
-
-			}
-		},
-		series: [
-			{
-			borderWidth: 2,
-			borderColor: '#F1F3EB',
-			shadow: false,
-			type: 'pie',
-			name: 'cpuload',
-			innerSize: '50%',
-			data: [
+	cpuload_chart = create_pie_chart("load", [
 				{ name: 'load percentage', y: 10.0, color: '#b2c831' },
 				{ name: 'rest', y: 90.0, color: '#3d3d3d' }
-			],
-			dataLabels: {
-				enabled: false,
-				color: '#000000',
-				connectorColor: '#000000'
-			}
-		}]
-	});
-
-	function update_cpu_load(newval)
-	{
-		newdata = [{ name: 'load percentage', y: newval, color: '#b2c831' }, { name: 'rest', y: (100-newval), color: '#3d3d3d' }]
-		cpuload_chart.series[0].setData(newdata)
-		$("#loadlbl").html(newval + "%")
-	}
-
-	diskspace_chart = new Highcharts.Chart({
-		chart: {
-			renderTo: 'space',
-			margin: [0, 0, 0, 0],
-			backgroundColor: null,
-			plotBackgroundColor: 'none',
-
-		},
-
-		title: {
-			text: null
-		},
-
-		tooltip: {
-			formatter: function() {
-				return this.point.name +': '+ this.y +' %';
-
-			}
-		},
-		series: [
-			{
-			borderWidth: 2,
-			borderColor: '#F1F3EB',
-			shadow: false,
-			type: 'pie',
-			name: 'SiteInfo',
-			innerSize: '50%',
-			data: [
+			]);
+	diskspace_chart = create_pie_chart("space", [
 				{ name: 'Used', y: 65.0, color: '#fa1d2d' },
 				{ name: 'Rest', y: 35.0, color: '#3d3d3d' }
-			],
-			dataLabels: {
-				enabled: false,
-				color: '#000000',
-				connectorColor: '#000000'
-			}
-		}]
-	});
-	function update_diskspace(newval)
-	{
-
-	}
-
-
-	memusage_chart = new Highcharts.Chart({
-		chart: {
-			renderTo: 'mem',
-			margin: [0, 0, 0, 0],
-			backgroundColor: null,
-			plotBackgroundColor: 'none',
-
-		},
-
-		title: {
-			text: null
-		},
-
-		tooltip: {
-			formatter: function() {
-				return this.point.name +': '+ this.y +' %';
-
-			}
-		},
-		series: [
-			{
-			borderWidth: 2,
-			borderColor: '#F1F3EB',
-			shadow: false,
-			type: 'pie',
-			name: 'mem',
-			innerSize: '50%',
-			data: [
+			]);
+	memusage_chart = create_pie_chart("mem", [
 				{ name: 'Used', y: 15.0, color: '#fa1d2d' },
 				{ name: 'Rest', y: 95.0, color: '#3d3d3d' }
-			],
-			dataLabels: {
-				enabled: false,
-				color: '#000000',
-				connectorColor: '#000000'
-			}
-		}]
-	});
-	function update_memusage(used, free, total)
-	{
-		used = Math.floor((used / total) * 100)
-		free = 100 - used;
-		newdata = [{ name: 'Used', y: used, color: '#b2c831' }, { name: 'Rest', y: free, color: '#3d3d3d' }]
-		memusage_chart.series[0].setData(newdata)
-		$("#memlbl").html(used + "%")
-	}
-	cputemp_chart = new Highcharts.Chart({
-		chart: {
-			renderTo: 'temp',
-			margin: [0, 0, 0, 0],
-			backgroundColor: null,
-			plotBackgroundColor: 'none',
-
-		},
-
-		title: {
-			text: null
-		},
-
-		tooltip: {
-			formatter: function() {
-				return this.point.name +': '+ this.y +' %';
-
-			}
-		},
-		series: [
-			{
-			borderWidth: 2,
-			borderColor: '#F1F3EB',
-			shadow: false,
-			type: 'pie',
-			name: 'temp',
-			innerSize: '50%',
-			data: [
+			]);
+	cputemp_chart = create_pie_chart("temp", [
 				{ name: 'Temp', y: 15.0, color: '#fa1d2d' },
 				{ name: 'Rest', y: 95.0, color: '#3d3d3d' }
-			],
-			dataLabels: {
-				enabled: false,
-				color: '#000000',
-				connectorColor: '#000000'
-			}
-		}]
-	});
-	function update_cputemp(temp)
-	{
-		newdata = [{ name: 'Temp', y: temp, color: '#b2c831' }, { name: 'Rest', y: 100 - temp, color: '#3d3d3d' }]
-		cputemp_chart.series[0].setData(newdata)
-		$("#templbl").html(temp + "<sup>o</sup>C")
-	}
+			]);
+
 
 	var categories = []
 	var serie1 = []
@@ -325,23 +228,51 @@ $(document).ready(function() {
 		$("#currentnetwork").html(realtime)
 	}
 
-	var timer = ""
+	var update_timer = undefined, checkconnection = undefined;
+	var connection_status_func = undefined;
 	function update_dashboard()
 	{
 		$.post("api.php", {"module": "sysinfo"}, function(data){
-			if(data.indexOf("Failed to connect") == -1)
+			if(isJson(data))
 			{
 				var obj = JSON.parse(data)
 				if(obj)
 				{
-					if(timer)
-						clearInterval(timer)
+					if(typeof(update_timer)!=='undefined')
+						clearInterval(update_timer)
+					update_uptime(obj.data.uptime)
 					update_cputemp(obj.data.temp)
 					update_cpu_load(obj.data.cpu_used)
 					update_memusage(obj.data.mem.mem_used, obj.data.mem.mem_free, obj.data.mem.mem_total)
 					update_network(obj.data.network.tx, obj.data.network.rx)
-					timer = setInterval(function(){update_dashboard()}, 1000);
+					update_timer = setInterval(function(){update_dashboard()}, 1000);
 				}
+			}
+			else
+			{
+				if(typeof(update_timer)!=='undefined')
+					clearInterval(update_timer)
+				notify_message("Server disconnected")
+				if(typeof(connection_status_func)!=='undefined')
+					connection_status_func()
+			}
+		});
+	}
+	connection_status_func = function connection_status()
+	{
+		$.post("api.php", {"module": "checkstate"}, function(data){
+			if(data != "Failed to connect")
+			{
+				if(typeof(checkconnection)!=='undefined')
+					clearInterval(checkconnection)
+				update_dashboard()
+				notify_message("Server connected");
+			}
+			else
+			{
+				if(typeof(checkconnection)!=='undefined')
+					clearInterval(checkconnection)
+				checkconnection = setInterval(connection_status_func, 1000)
 			}
 		});
 	}

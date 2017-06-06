@@ -525,6 +525,17 @@ digiclock {
 	background-position: center center;
 	margin:auto;
 }
+
+#live {
+	width: 15.313em;
+	height: 15.313em;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 1.063em;
+	margin-top: 1.063em;
+	background-position: center center;
+	margin:auto;
+}
 /**********LINE AND BARS**********/
 
 .section-graph {
