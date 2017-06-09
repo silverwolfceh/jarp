@@ -277,6 +277,7 @@ $(document).ready(function() {
 		});
 	}
 	update_dashboard();
+	start_voice_command();
 	$('[data-toggle="tooltip"]').tooltip()
 	$(".switch-input").click(function (){
 		var id = $(this).attr("id")
