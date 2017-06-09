@@ -86,24 +86,36 @@ function create_pie_chart(render_element, series_data)
 function update_cpu_load(newval)
 {
 	newdata = [{ name: 'load percentage', y: newval, color: '#b2c831' }, { name: 'rest', y: (100-newval), color: '#3d3d3d' }]
+	if(newval > 50)
+		newdata[0]["color"] = "red"
+
 	cpuload_chart.series[0].setData(newdata)
 	$("#loadlbl").html(newval + "%")
 }
 function update_diskspace(newval)
 {
+	newdata = [{ name: 'Used', y: newval, color: '#b2c831' }, { name: 'Rest', y: (100 - newval), color: '#3d3d3d' }]
+	if(newval > 70)
+		newdata[0]["color"] = "red"
 
+	diskspace_chart.series[0].setData(newdata)
+	$("#spacelbl").html(newval + "%")
 }
 function update_memusage(used, free, total)
 {
 	used = Math.floor((used / total) * 100)
 	free = 100 - used;
 	newdata = [{ name: 'Used', y: used, color: '#b2c831' }, { name: 'Rest', y: free, color: '#3d3d3d' }]
+	if(used > 70)
+		newdata[0]["color"] = "red"
 	memusage_chart.series[0].setData(newdata)
 	$("#memlbl").html(used + "%")
 }
 function update_cputemp(temp)
 {
 	newdata = [{ name: 'Temp', y: temp, color: '#b2c831' }, { name: 'Rest', y: 100 - temp, color: '#3d3d3d' }]
+	if(temp > 50)
+		newdata[0]["color"] = "red"
 	cputemp_chart.series[0].setData(newdata)
 	$("#templbl").html(temp + "<sup>o</sup>C")
 }
@@ -240,6 +252,7 @@ $(document).ready(function() {
 				{
 					if(typeof(update_timer)!=='undefined')
 						clearInterval(update_timer)
+					update_diskspace(obj.data.space.used)
 					update_uptime(obj.data.uptime)
 					update_cputemp(obj.data.temp)
 					update_cpu_load(obj.data.cpu_used)
@@ -251,7 +264,10 @@ $(document).ready(function() {
 			else
 			{
 				if(typeof(update_timer)!=='undefined')
+				{
 					clearInterval(update_timer)
+					update_timer = undefined
+				}
 				notify_message("Server disconnected")
 				if(typeof(connection_status_func)!=='undefined')
 					connection_status_func()
@@ -309,7 +325,7 @@ $(document).ready(function() {
 					}
 					else
 					{
-						notify_message(data, "alert")
+						notify_message(data, "error")
 					}
 				}
 			});
@@ -340,3 +356,27 @@ $(document).ready(function() {
 	})
 
 });
+
+function light_control(info)
+{
+	var state = 0;
+	var pin = -1
+
+	if(info[1] == "bật")
+		state = 1;
+	if(info[2] == "xanh")
+		pin = 18
+	else if(info[2] == "đỏ")
+		pin = 23
+	else if(info[2] == "cam")
+		pin = 24
+
+	if(pin != -1)
+	{
+		$.post("api.php", {"module": "gpio", "pin": pin, "state": state}, function(data) {
+			notify_message("Command executed")
+			console.log(data)
+		});
+	}
+}
+add_command(new RegExp(/(bật|tắt)\sđèn\s(xanh|đỏ|cam)+/), light_control);

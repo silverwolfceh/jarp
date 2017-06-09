@@ -1,42 +1,31 @@
-function speech_parser(transcript)
+var registered_command = []
+
+
+
+function add_command(re, cb)
 {
-	var patt = new RegExp(/(bật|tắt)\sđèn\s(xanh|đỏ|cam)+/);
-	if(patt.test(transcript))
+	var cmd = {"re": re, "cb": cb}
+	registered_command.push(cmd)
+}
+
+function parse_command(str)
+{
+	var x = registered_command.length;
+	for(i = 0; i < x; i++)
 	{
-		var res = patt.exec(transcript);
-		if(res.length >= 3)
+		if(registered_command[i]["re"].test(str))
 		{
-			var state = 0;
-			if(res[1] == "bật")
-				state = 1;
-			var pin = -1;
-			switch(res[2])
-			{
-				case "xanh":
-				{
-					pin = 18;
-					break;
-				}
-				case "đỏ":
-				{
-					pin = 23;
-					break;
-				}
-				case "cam":
-				{
-					pin = 24;
-					break;
-				}
-			}
-			if(pin != -1)
-			{
-				$.post("api.php", {"module": "gpio", "pin": pin, "state": state}, function(data){
-					console.log(data)
-				});
-			}
+			var res = registered_command[i]["re"].exec(str);
+			registered_command[i]["cb"](res)
 		}
 	}
 }
+
+function speech_parser(str)
+{
+	parse_command(str)
+}
+
 function start_voice_command()
 {
 	if ('webkitSpeechRecognition' in window)

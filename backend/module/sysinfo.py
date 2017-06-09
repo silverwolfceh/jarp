@@ -21,6 +21,9 @@ class sysinfo(object):
 		self.info['network']['tx'] = 0
 		self.info['network']['rx'] = 0
 		self.info['network']['if'] = "wlan0"
+		self.info['space'] = {}
+		self.info['space']['source'] = "/dev/root"
+		self.info['space']['used'] = 0 #Percent
 		self.res = ""
 		pass
 
@@ -85,7 +88,13 @@ class sysinfo(object):
 		m = re.search('([0-9\:]+)', output)
 		self.info['uptime'] = m.group(1)
 
+	def space_info(self):
+		output = self.execute("df -h --output=source,pcent | grep %s" % self.info['space']['source'])
+		m = re.search('([0-9]+)', output)
+		self.info['space']['used'] = float(m.group(1))
+
 	def handle_data(self, data):
+		self.space_info()
 		self.cpu_info()
 		self.mem_info()
 		self.temp_info()
