@@ -1,5 +1,7 @@
 #!/bin/sh
 
+BASEDIR=$(dirname "$0")
+
 x=`sudo netstat -ap | grep 9999 | wc -l`
 
 while [ $x -gt 0 ]
@@ -10,4 +12,4 @@ do
 	echo "Number of wait $x"
 done
 echo "Starting server...."
-python server.py
+python $BASEDIR/server.py
