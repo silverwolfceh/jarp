@@ -19,9 +19,9 @@ then
     apt-get install mysql-client
     echo "Updating path to jarp"
     ROOT_DIR=`pwd`
-    REPLACE_STRING="DocumentRoot /var/www/html"
-    REPLACE_IT="DocumentRoot $ROOT_DIR/web"
-    sed -i.bak s/$REPLACE_STRING/$ROOT_DIR/g /etc/apache2/sites-enabled/000-default.conf
+    OLD_ROOT="DocumentRoot /var/www/html"
+    NEW_ROOT="DocumentRoot $ROOT_DIR/web"
+    sed -i.bak "s~$OLD_ROOT~$NEW_ROOT~" /etc/apache2/sites-enabled/000-default.conf
     echo "Allowing new dir path"
     echo "<Directory $ROOT_DIR/web/>" >> /etc/apache2/apache2.conf
     echo "  Options Indexes FollowSymLinks" >> /etc/apache2/apache2.conf
@@ -36,7 +36,7 @@ apt-get install ifstat
 
 echo "Installing backend service"
 ROOT_DIR=`pwd`
-sed -i.bak s/ROOT_DIR/$ROOT_DIR/g backend.service
+sed -i.bak "s~ROOT_DIR~$ROOT_DIR~" backend.service
 cp backend.service /lib/systemd/system/
 chmod 644 /lib/systemd/system/backend.service
 systemctl daemon-reload
