@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/maiopi/backend/server.py
+ExecStart=/usr/bin/python ROOT_DIR/backend/server.py
 Restart=on-abort
 
 [Install]
