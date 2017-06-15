@@ -35,6 +35,7 @@ echo "Installing IFSTAT"
 apt-get install ifstat
 
 echo "Installing backend service"
+sudo pip install RPi.GPIO
 ROOT_DIR=`pwd`
 sed -i.bak "s~ROOT_DIR~$ROOT_DIR~" backend.service
 cp backend.service /lib/systemd/system/

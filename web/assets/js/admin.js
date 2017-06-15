@@ -355,6 +355,19 @@ $(document).ready(function() {
 		}
 	})
 
+	$("#ico_logout").click(function(){
+		$.post("api.php", { "module": "user", "action" : "logout" }, function(data) {
+					if(data == "Logout success")
+					{
+						document.location.href = "login.php";
+					}
+		});
+	})
+
+	$("#ico_setting").click(function(){
+		document.location.href="setting.php";
+	})
+
 });
 
 function light_control(info)

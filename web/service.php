@@ -1,6 +1,5 @@
 <?php
-error_reporting(E_ALL);
-include_once("config.php");
+include_once("global.php");
 
 function transceiver_data($data, &$err)
 {

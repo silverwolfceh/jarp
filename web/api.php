@@ -1,6 +1,7 @@
 <?php
+@session_start();
+include_once("global.php");
 require_once("service.php");
-
 $err = array("code" => 0, "msg" => "");
 if(isset($_REQUEST['module']))
 {
@@ -71,6 +72,44 @@ if(isset($_REQUEST['module']))
 			{
 				echo $err['msg']; die();
 			}
+		}
+		case "user":
+		{
+			$action = $_POST['action'];
+			if($action == "login")
+			{
+				$users = $GLOBALS['users'];
+				$err = "";
+				if(isset($_POST['username']))
+				{
+					$user = $_POST['username'];
+					$pass = $_POST['password'];
+					if(array_key_exists($user, $users))
+					{
+						if($pass == $users[$user]["password"])
+						{
+							$_SESSION['login'] = "ok";
+							$_SESSION['loginname'] = $user;
+							echo "Login success"; die();
+						}
+						else
+						{
+							echo "Invalid password!"; die();
+						}
+					}
+					else
+					{
+						echo "Username not exist!"; die();
+					}
+				}
+			}
+			else if($action == "logout")
+			{
+				session_destroy();
+				echo "Logout success"; die();
+			}
+			
+			break;
 		}
 		default:
 		{

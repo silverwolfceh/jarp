@@ -1,3 +1,10 @@
+<?php
+	@session_start();
+	include_once("global.php");
+	if(isset($_SESSION) && isset($_SESSION['login']) && $_SESSION['login'] == "ok")
+	{
+		$fullname = $GLOBALS['users'][$_SESSION['loginname']]['fullname'];
+?>
 <!doctype html>
 <html>
 <head>
@@ -82,7 +89,7 @@
 		  <div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 			  <li class="active"><a href="index.html"><i class="icon-home icon-white"></i> Home</a></li>
-			  <li><a href="manager.html"><i class="icon-folder-open icon-white"></i> Device Manager</a></li>
+			  <li><a href="setting.php"><i class="icon-folder-open icon-white"></i> Configuration</a></li>
 			  <li><a href="user.html"><i class="icon-user icon-white"></i> User</a></li>
 			</ul>
 		  </div><!--/.nav-collapse -->
@@ -98,16 +105,16 @@
 					<dtitle>User Profile</dtitle>
 					<hr>
 					<div class="thumbnail">
-						<img src="assets/img/face80x80.jpg" alt="Tong Vuu" class="img-circle">
+						<img src="assets/img/face80x80.jpg" alt="<?php echo $fullname; ?>" class="img-circle">
 					</div> <!-- /thumbnail -->
-					<h1>Tong Vuu</h1>
+					<h1><?php echo $fullname; ?></h1>
 					<h3>Ho Chi Minh, Vietnam</h3>
 					<br>
 					<div class="info-user">
-						<span aria-hidden="true" class="li_user fs1"></span>
-						<span aria-hidden="true" class="li_settings fs1"></span>
-						<span aria-hidden="true" class="li_mail fs1"></span>
-						<span aria-hidden="true" class="li_key fs1"></span>
+						<span aria-hidden="true" class="li_lock fs1" id="ico_logout" title="Logout"></span>
+						<span aria-hidden="true" class="li_settings fs1" id="ico_setting" title="Configure"></span>
+						<!--<span aria-hidden="true" class="li_mail fs1"></span>
+						<span aria-hidden="true" class="li_key fs1"></span>-->
 					</div>
 				</div>
 			</div>
@@ -347,3 +354,10 @@
 	<script type="text/javascript" src="assets/js/admin.js"></script>
 
 </body></html>
+<?php
+	}
+	else
+	{
+		echo "<script>document.location.href='login.php'; </script>";
+	}
+?>
