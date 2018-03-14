@@ -38,4 +38,4 @@ HighCharts
 
 
 ## Screenshot
-![Alt text](https://raw.githubusercontent.com/silverwolfceh/jarp/master/web/screenshot.png?raw=true "Raspberry Pi Dashboard")
+![Alt text](https://github.com/silverwolfceh/jarp/raw/master/web/screenshot.png "Raspberry Pi Dashboard")
