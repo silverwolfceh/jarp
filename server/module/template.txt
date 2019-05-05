@@ -1,0 +1,20 @@
+class classname(object):
+	module = "classname"
+
+	def __init__(self):
+		self.res = ''
+		pass
+
+	def generate_default_response(self, status = 'success', reason = '', rep = ''):
+		res = {}
+		res['status'] = status
+		res['reason'] = reason
+		res['data'] = rep
+		res['module'] = self.module
+		return res
+
+	''' Data is the json data from the client '''
+	def handle_data(self, data):
+		output = ''
+		self.res = self.generate_default_response('success', '', output)
+		return json.dumps(self.res)
