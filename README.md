@@ -1,4 +1,4 @@
-# JARP - Just another raspberry project
+# JARP-F - Just another raspberry project in flask
 
 
 ## Description
@@ -9,15 +9,8 @@ It can monitor the system status, control your light and camera
 ## How to
 1. Checkout this project
 
-2. Install webserver support php on your PI
-Guide here: https://www.stewright.me/2015/08/tutorial-install-apache-php-and-mysql-on-a-raspberry-pi-2/
-
-3. Update webserver directory part and site-enabled/default.conf to point to the web directory in source
-
-4. Install python from version 2.7.6 to your PI (this maynot need)
-
-5. Install neccessary packages:
-sudo pip install RPi.GPIO
+2. Install neccessary packages:
+sudo pip install -r requirements.txt
 sudo apt-get install ifstat
 
 6. Run server.py (python server.py)
@@ -32,10 +25,6 @@ You can modify the backend.service file with the source path to enable server st
 ## Credits:
 tongvuu@gmail.com
 
-BLOCKS DASHBOARD template
-
-HighCharts
-
 
 ## Screenshot
-![Alt text](https://github.com/silverwolfceh/jarp/raw/master/web/screenshot.png "Raspberry Pi Dashboard")
+![Alt text](https://github.com/silverwolfceh/jarp/raw/flask/web/screenshot.png "Raspberry Pi Dashboard")
